@@ -20,7 +20,7 @@ public class EnemyAI : MonoBehaviour
 
     void Update()
     {
-        distanceToTarget = Vector3.Distance(target.position, transform.position);
+        distanceToTarget = Vector3.Distance(target.position, transform.position); //enemy position
 
         if (isProvoked)
         {
@@ -35,12 +35,12 @@ public class EnemyAI : MonoBehaviour
 
     void EngageTarget()
     {
-        if (distanceToTarget >= navMeshAgent.stoppingDistance) //look at the inspertor window, it s set to 1
+        if (distanceToTarget >= navMeshAgent.stoppingDistance) //look at the inspector window, it s set to 1
         {
             ChaseTarget();
         }
 
-        else if (distanceToTarget <= navMeshAgent.stoppingDistance)
+        if (distanceToTarget <= navMeshAgent.stoppingDistance)
         {
             AttackTarget();
         }
@@ -56,6 +56,7 @@ public class EnemyAI : MonoBehaviour
         Debug.Log(name + " has seeked and is destroying " + target.name);
     }
 
+    // it shows chaseRange
     void OnDrawGizmosSelected()
     {
         // Display the explosion radius when selected
