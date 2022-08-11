@@ -11,23 +11,37 @@ public class Weapon : MonoBehaviour
     [SerializeField] ParticleSystem muzzleFlash;
     [SerializeField] GameObject hitEffect;
     [SerializeField] Ammo ammoSlot; //is player
+    [SerializeField] AmmoType ammoType;
+    [SerializeField] float timeBetweenShots = 0.5f;
+
+    bool canShoot = true; //we want to delay shoot method, we ll use coroutine
+
+    void OnEnable()     //this particular instance of this class is enabled
+    {
+        canShoot = true; //for bug:when switch the gun it's being not enabled; never turning can shoot back to true (cs:43)
+    }
 
     void Update()
     {
-        if (Input.GetButtonDown("Fire1"))   //Returns true during the frame the user pressed down the virtual button identified by buttonName.
+        if (Input.GetMouseButtonDown(0) && canShoot == true)
         {
-            Shoot();
+            StartCoroutine(Shoot());
         }
     }
 
-    void Shoot()
+    IEnumerator Shoot()
     {
-        if (ammoSlot.GetCurrentAmmo() > 0)
+        canShoot = false;   //we can't fire off anymore coroutines
+
+        if (ammoSlot.GetCurrentAmmo(ammoType) > 0)
         {
             PlayMuzzleFlash();
             ProcessRaycast();
-            ammoSlot.ReduceCurrentAmmo();
+            ammoSlot.ReduceCurrentAmmo(ammoType);
         }
+
+        yield return new WaitForSeconds(timeBetweenShots);  //we ll wait
+        canShoot = true;    //and then we can shoot again
     }
 
     void PlayMuzzleFlash()
