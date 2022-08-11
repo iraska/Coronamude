@@ -14,5 +14,8 @@ public class DeathHandler : MonoBehaviour
     public void HandleDeath()
     {
         gameOverCanvas.enabled = true;
+        Time.timeScale = 0;    //stop time (it s not start again)
+        Cursor.lockState = CursorLockMode.None;     //we have lock state and we want the cursor lock mode to be of a value of none
+        Cursor.visible = true;     //unlock the cursor
     }
 }

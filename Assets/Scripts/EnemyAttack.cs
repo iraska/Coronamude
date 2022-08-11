@@ -10,7 +10,7 @@ public class EnemyAttack : MonoBehaviour
 
     void Start()
     {
-        target = FindObjectOfType<PlayerHealth>();
+        target = FindObjectOfType<PlayerHealth>(); //target is belong onather gameObj so we use findObjOfType
     }
 
     public void AttackHitEvent()
