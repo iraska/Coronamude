@@ -12,16 +12,27 @@ public class EnemyAI : MonoBehaviour
     NavMeshAgent navMeshAgent;
     float distanceToTarget = Mathf.Infinity;    //player' and enemy' start distance
     bool isProvoked = false;
+    EnemyHealth health;
 
     void Start()
     {
-        navMeshAgent = GetComponent<NavMeshAgent>(); 
+        navMeshAgent = GetComponent<NavMeshAgent>();
+        health = GetComponent<EnemyHealth>();
     }
 
 
     void Update()
     {
-        distanceToTarget = Vector3.Distance(target.position, transform.position); //enemy position
+        if (health.IsDead()) //am i dead?
+        {
+            enabled = false; //turns off this enemy component, it can't attack but it doesn't stop the navMeshAgent
+            navMeshAgent.enabled = false; //the navMeshAgent doesn't know it's death
+        }
+
+        else
+        {
+            distanceToTarget = Vector3.Distance(target.position, transform.position); //enemy position
+        }
 
         if (isProvoked)
         {
