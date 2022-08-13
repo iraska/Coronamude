@@ -5,7 +5,6 @@ using UnityEngine.AI;
 
 public class EnemyAI : MonoBehaviour
 {
-    [SerializeField] Transform target;
     [SerializeField] float chaseRange = 5f;    //how close to the enemy do we get before the enemy start chasing
     [SerializeField] float turnSpeed = 5f;
 
@@ -13,11 +12,13 @@ public class EnemyAI : MonoBehaviour
     float distanceToTarget = Mathf.Infinity;    //player' and enemy' start distance
     bool isProvoked = false;
     EnemyHealth health;
+    Transform target;
 
     void Start()
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
         health = GetComponent<EnemyHealth>();
+        target = FindObjectOfType<PlayerHealth>().transform;
     }
 
 
@@ -27,8 +28,8 @@ public class EnemyAI : MonoBehaviour
         {
             enabled = false; //turns off this enemy component, it can't attack but it doesn't stop the navMeshAgent
             navMeshAgent.enabled = false; //the navMeshAgent doesn't know it's death
+            isProvoked = false; //for SetDestination Error
         }
-
         else
         {
             distanceToTarget = Vector3.Distance(target.position, transform.position); //enemy position
@@ -38,7 +39,6 @@ public class EnemyAI : MonoBehaviour
         {
             EngageTarget();
         }
-
         else if (distanceToTarget <= chaseRange)
         {
             isProvoked = true;
